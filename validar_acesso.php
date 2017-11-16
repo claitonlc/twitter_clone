@@ -4,7 +4,7 @@ session_start();
 require_once('db.class.php');
 
 $usuario = $_POST['usuario'];
-$senha = $_POST['senha'];
+$senha = md5($_POST['senha']);
 
 
 //print_r($_POST);

@@ -19,7 +19,7 @@ require_once('db.class.php');
 		<?php
 $usuario =  (isset($_POST['usuario'])) ? $_POST['usuario'] : '';
 $email =    (isset($_POST['email'])) ? $_POST['email'] : '';
-$senha =    (isset($_POST['senha'])) ? $_POST['senha'] : '';
+$senha =   md5($_POST['senha']);
 
 //var_dump($_POST);
 //exit;
