@@ -1,4 +1,8 @@
 <?php 
+session_start();
+//if(!isset($_SESSION['usuario'])){
+	//header('Location: index?erro=1');
+//}
 
 $erro = isset($_GET['erro']) ? $_GET['erro'] : 0;
 

@@ -9,7 +9,7 @@ if(!isset($_SESSION['usuario'])){
 <html lang="pt-br">
 	<head>
 		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<title>Twitter clone</title>
@@ -24,18 +24,31 @@ if(!isset($_SESSION['usuario'])){
 
 			$(document).ready(function(){
 
-				$('#btn_tweet').click(function(){
+				$('#btn_procurar_pessoa').click(function(){
 
 					//alert($('#texto_tweet').val());
-					if($('#texto_tweet').val().length > 0){
+					if($('#nome_pessoa').val().length > 0){
 						$.ajax({
-							url: 'inclui_tweet.php',
+							url: 'get_procurar_pessoas.php',
 							method: 'post',
-							data: $('#form_tweet').serialize(),
+							data: $('#form_procurar_pessoas').serialize(),
 							success: function(data){
-								$('#texto_tweet').val('');
-								alert('Tweet incluido com sucesso!');
-								atualizaTweet();
+								$('#pessoas').html(data);
+								$('.btn_seguir').click(function(){
+									var id_usuario = $(this).data('id_usuario');
+									//alert(id_usuario);
+
+									$.ajax({
+										url: 'seguir.php',
+										method: 'post',
+										data: { seguir_id_usuario: id_usuario },
+										success: function(data){
+											alert('Seguindo...');
+
+										}
+									});
+
+								});
 
 							}
 						});
@@ -44,18 +57,7 @@ if(!isset($_SESSION['usuario'])){
 
 				});
 
-				function atualizaTweet(){
-
-					//carregar os tweets
-					$.ajax({
-						url:'get_tweet.php',
-						success: function(data){
-							$('#tweets').html(data);
-							//alert(data);
-						}
-					});
-				}
-				atualizaTweet();
+	
 			});
 
 		</script>	
@@ -78,6 +80,7 @@ if(!isset($_SESSION['usuario'])){
 	        
 	        <div id="navbar" class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav navbar-right">
+	            <li><a href="home.php">Home</a></li>
 	            <li><a href="sair.php">Sair</a></li>
 	          </ul>
 	        </div><!--/.nav-collapse -->
@@ -106,22 +109,22 @@ if(!isset($_SESSION['usuario'])){
 	    	<div class="col-md-6">
 	    		<div class="panel panel-default">
 	    			<div class="panel-body">
-	    				<form id="form_tweet" class="input-group">
-	    					<input type="text" id="texto_tweet"  name="texto_tweet" class="form-control" placeholder="O que esta acontecendo" maxlength="140"/>
+	    				<form id="form_procurar_pessoas" class="input-group">
+	    					<input type="text" id="nome_pessoa"  name="nome_pessoa" class="form-control" placeholder="Quem você esta procurando" maxlength="140"/>
 	    					<span class="input-group-btn">
-	    						<button class="btn btn-default" id="btn_tweet" type="button">Tweet</button>
+	    						<button class="btn btn-default" id="btn_procurar_pessoa" type="button">Procurar</button>
 	    					</span>
 
 			</form>
 			</div>
 		    </div>
-		    <div id="tweets" class="list-group"></div>
+		    <div id="pessoas" class="list-group"></div>
 
 				</div>
 			<div class="col-md-3">
 				<div class="panel panel-default">
 					<div class="panel-body">
-						<h4><a href="procura_pessoas.php">Procurar pessoas</a></h4>
+						<h4><a href="#">Procurar pessoas</a></h4>
 				
 			</div>
 
